@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    /* Sidebar styles */
+    body {
+      background-color: #1c1c1c;
+      color: #ffffff;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background-color: black;
+      padding: 20px; 
+      border-radius: 15px;
+      /* border: 1px solid #de0202; */
+      box-sizing: border-box;
+      position: fixed;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sidebar-header {
+      margin-bottom: 19px;
+    }
+
+    .sidebar-footer {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .highlight {
+      border-radius: 150px;
+      border: 2px solid white;
+      font-weight: bold;
+
+    }
+
+    .sidebar-header h2 {
+      font-size: 1.8rem;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    .sidebar-menu {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sidebar-menu li {
+      margin-bottom: 10px;
+    }
+
+    .sidebar-menu li a {
+      color: #ffffff;
+      text-decoration: none;
+      display: block;
+      padding: 18px;
+      font-size: 1.2rem;
+    }
+
+    .sidebar-menu li a:hover {
+      background-color: #333333;
+      border-radius: 150px;
+    }
+
+    .sidebar-menu li.active a {
+      font-weight: bold;
+      background-color: #434343;
+      border-radius: 30px;
+    }
+
+    /* Content styles */
+    .content {
+      margin-left: 270px;
+      /* Adjust this value based on sidebar width */
+      padding: 20px;
+    }
+
+    
+    .menu-content {
+      display: none;
+    }
+
+    .menu-content.active {
+      display: block;
+    }
+    
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h2>o_O</h2>
+    </div>
+    <ul class="sidebar-menu">
+      <li  {% if request.path == '/'%}class="active"{% endif %} {% if request.path == '/first' %}class="active"{% endif %}><a href="{% url 'first' %}" onclick="loadContent('/first')" >Home</a></li>
+      <li {% if request.path == '/explore/' %}class="active"{% endif %}><a href="{% url 'explore' %}" onclick="loadContent('/explore')">Explore</a></li>
+      <li {% if request.path == "/search/"|add:user.username|add:"/" %}class="active"{% endif %}><a href="{% url 'search' user.username %}">Search</a></li>
+      <li {% if request.path == '/notifications' %}class="active"{% endif %}><a href="{% url 'notifications' %}" onclick="loadContent('/notifications')">Notifications</a></li>
+      <li><a href="{% url 'message' %}" onclick="loadContent('/your-view-url-messages')">Messages</a></li>
+      <li {% if request.path == '/savepost' %}class="active"{% endif %} class="highlight"><a href="{% url 'savepost' %}" onclick="loadContent('/savepost')">POST</a></li>
+      <li {% if request.path == "/profile/"|add:user.username|add:"/" %}class="active"{% endif %}><a href="{% url 'profile' user.username %}">Profile</a></li>
+      <li><a href="{% url 'logout_view' %}" onclick="loadContent('/your-view-url-messages')">Signout</a></li>
+
+    </ul>
+
+    <div class="sidebar-footer">Logged in as {{request.user}}</div>
+  </div>
+  <div class="content">
+    <div id="content-container">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </div>
+
+  <!-- <script>
+    function loadContent(url) {
+      fetch(url)
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('content-container').innerHTML = data;
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+  </script> -->
+  
+</body>
+
+</html>

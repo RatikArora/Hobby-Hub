@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    /* Sidebar styles */
+    body {
+      background-color: #1c1c1c;
+      color: #ffffff;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background-color: #000000;
+      padding: 20px;
+      box-sizing: border-box;
+      position: fixed;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sidebar-header {
+      margin-bottom: 19px;
+    }
+
+    .sidebar-header h2 {
+      font-size: 1.8rem;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    .sidebar-menu {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sidebar-menu li {
+      margin-bottom: 10px;
+    }
+
+    .sidebar-menu li a {
+      color: #ffffff;
+      text-decoration: none;
+      display: block;
+      padding: 18px;
+      font-size: 1.2rem;
+    }
+
+    .sidebar-menu li a:hover {
+      background-color: #333333;
+      border-radius: 150px;
+    }
+
+    .sidebar-menu li.active a {
+      font-weight: bold;
+      background-color: #434343;
+      border-radius: 30px;
+    }
+
+    /* Content styles */
+    .content {
+      margin-left: 270px;
+      /* Adjust this value based on sidebar width */
+      padding: 20px;
+    }
+
+    .menu-content {
+      display: none;
+    }
+
+    .menu-content.active {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h2>Sidebar</h2>
+    </div>
+    <ul class="sidebar-menu">
+      <li class="active"><a href="#" onclick="loadContent('/your-view-url-home')">Home</a></li>
+      <li><a href="#" onclick="loadContent('/your-view-url-explore')">Explore</a></li>
+      <li><a href="#" onclick="loadContent('/your-view-url-notifications')">Notifications</a></li>
+      <li><a href="#" onclick="loadContent('/your-view-url-messages')">Messages</a></li>
+      <li><a href="#" onclick="loadContent('/your-view-url-profile')">Profile</a></li>
+    </ul>
+  </div>
+  <div class="content">
+    <div id="content-container"></div>
+  </div>
+  <script>
+    function loadContent(url) {
+      fetch(url)
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('content-container').innerHTML = data;
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+  </script>
+</body>
+
+</html>

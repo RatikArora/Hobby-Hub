@@ -1,0 +1,187 @@
+{% extends "home.html" %}
+{% block content %}
+{% load static %}
+
+  <!-- <h3>extended Profile</h3>
+  <p>This is the Profile tab.</p> -->
+  <!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    /* Profile page styles */
+    body {
+      background-color: #000000;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+    }
+
+    .profile-container {
+      max-width: 700px;
+      margin: 50px auto;
+      padding: 25px;
+      background-color: #111111;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .profile-photo {
+      width: 200px;
+      height: 200px;
+      border: 5px solid #ffffff;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 0 auto;
+    }
+
+    .profile-photo img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .profile-details {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .profile-details h2 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+
+    .profile-details p {
+      margin-bottom: 5px;
+    }
+
+    .profile-details .interests {
+      margin-top: 20px;
+    }
+
+    .profile-details .interests ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .profile-details .interests li {
+      margin-right: 10px;
+      padding: 5px 10px;
+      background-color: #333333;
+      border-radius: 5px;
+    }
+
+
+
+    .edit-profile-button {
+      position: absolute;
+      top: 87px;
+      right: 270px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    
+    .edit-profile-button img {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+    }
+    
+    .dropdown {
+      display: none;
+      position: absolute;
+      background-color: #333;
+      border-radius: 5px;
+      padding: 10px;
+      right: 0;
+      top: 30px;
+      z-index: 1;
+      width: 120px;
+    }
+    
+    .edit-profile-button.active .dropdown {
+      display: block;
+    }
+    
+    .dropdown a {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+      padding: 5px;
+    }
+    .date-joined {
+      color: #999999; /* Light gray color */
+      font-size: 0.9rem;
+      margin-top: 10px; /* Add some space between the interests and date joined */
+    }
+
+    
+  </style>
+</head>
+
+<body>
+  
+  <div class="profile-container">
+    <div class="edit-profile-button">
+      <img src="{% static 'editpencil.png' %}" alt="Edit Icon">
+      <span>Edit</span>
+      <div class="dropdown">
+        <a href="{% url 'editprofile' %}">Edit Profile</a>
+        <a href="{% url 'followtopic' %}">Add Hobbies</a>
+      </div>
+    </div>
+    {% comment %} <div class="profile-photo">
+      <img src="{% static '/images/photo.jpeg' %}" alt="Profile Photo">
+    </div> {% endcomment %}
+
+    <div class="profile-photo">
+      <img src="{{ user.profile.image.url }}" alt= "profile picture   ">
+    </div>
+    <div class="profile-details">
+      <h2>@{{user.username}}</h2>
+      <p>Name: {{user.first_name}} {{user.last_name}}</p>
+      {% if user.profile.bio %}
+        <p>Bio: {{ user.profile.bio }}</p>
+      {% endif %}
+      <p>Email: {{user.email}}</p>
+      {% comment %} <p>Current Location: </p> {% endcomment %}
+
+
+     
+
+      <div class="interests">
+        <h3>Interests</h3>
+         
+        <ul>
+          
+            {% for j in hobbies %}
+            {% for i in j %}
+              <li>{{ i }}</li>  
+            {% endfor %}
+            </ul><p></p><ul>
+            {% endfor %}
+        
+            </ul>
+
+            <p class="date-joined">Joined o_O on {{ user.date_joined|date:"F d, Y" }}</p>
+          
+      
+         
+        
+      </div>
+    </div>
+  </div>
+  <script>
+    document.querySelector('.edit-profile-button').addEventListener('click', function() {
+      this.classList.toggle('active');
+    });
+  </script>
+</body>
+
+</html>
+
+
+{% endblock content %}

@@ -1,0 +1,214 @@
+{% extends "home.html" %}
+{% block content %}
+
+
+{% load static %}
+
+<style>
+  .pseudo-text-effect {
+    position: relative;
+    display: inline-block;
+    color: inherit;
+    text-decoration: none;
+    font-size: 2rem; /* Increase the text size */
+    overflow: hidden;
+    transition: transform 0.5s;
+    letter-spacing: -1px; /* Adjust letter spacing */
+  }
+  
+  .pseudo-text-effect::after {
+    content: attr(data-after);
+    display: inline-block;
+    transform: translateY(100%);
+    position: absolute;
+    left: 0;
+    transition: inherit;
+  }
+  
+  .pseudo-text-effect:hover::after,
+  .pseudo-text-effect:hover span {
+    transform: translateY(0%);
+  }
+  
+  /* Additional styles for letter animation */
+  .pseudo-text-effect span {
+    display: inline-block;
+    transition: transform 0.3s;
+    position: relative; /* Add this line */
+  }
+
+  .pseudo-text-effect:hover span:nth-child(1) {
+    transform: translateY(-100%);
+  }
+
+  .pseudo-text-effect:hover span:nth-child(2) {
+    transform: translateY(-200%);
+  }
+
+  .pseudo-text-effect:hover span:nth-child(3) {
+    transform: translateY(-300%);
+  }
+
+  .pseudo-text-effect:hover span:nth-child(4) {
+    transform: translateY(-400%);
+  }
+
+  .pseudo-text-effect:hover span:nth-child(5) {
+    transform: translateY(-500%);
+  }
+
+  .pseudo-text-effect:hover span:nth-child(6) {
+    transform: translateY(-600%);
+  }
+
+  .pseudo-text-effect:hover span:nth-child(7) {
+    transform: translateY(-700%);
+  }
+  /* CSS styles for the post template */
+  .post {
+    position: relative;
+    background-color: #000000;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+    padding: 20px;
+    color: #ffffff;
+    transition: transform 0.2s ease;
+
+  }
+
+  .post .content {
+    margin-bottom: 10px;
+  }
+
+  .post .username {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  .post .description {
+    margin-bottom: 10px;
+    padding-left: 15px;
+  }
+
+  .post .picture {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    padding: 5px;
+  }
+
+  .post .date {
+    color: #999999;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    padding-left: 15px;
+
+  }
+
+  .post .tags {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    padding-left: 15px;
+
+  }
+
+  .post .tags li {
+    display: inline-block;
+    margin-right: 10px;
+    background-color: #333333;
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 20px;
+  }
+
+
+  .post:hover {
+    transform: scale(1.02); /* Slightly scale up on hover */
+  }
+
+  .display-button {
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 15px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  .delete-post-link {
+    position: absolute;
+    top: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+    z-index: 1; /* Place it above other content */
+  }
+  
+  .delete-post-icon {
+    width: 20px; /* Adjust the width and height as needed */
+    height: 20px; /* Adjust the width and height as needed */
+    cursor: pointer;
+  }
+</style>
+<script>
+  document.querySelectorAll('.display-button').forEach((button) => {
+    button.addEventListener('click', (event) => {
+      const postContent = event.target.parentElement.querySelector('.description');
+      postContent.classList.toggle('hidden'); // Add a CSS class for hiding content
+    });
+  });
+</script>
+<!-- Post template -->
+<h1 class="pseudo-text-effect" data-after="E x p l o r e">
+  <span>E</span>
+  <span>x</span>
+  <span>p</span>
+  <span>l</span>
+  <span>o</span>
+  <span>r</span>
+  <span>e</span>
+</h1>
+
+{% for post in posts %}
+  <div class="post">
+    <div class="post-content">  
+      {% spaceless %}
+      
+        {% if post.username|lower == request.user.username|lower %}
+          <a href="{% url 'profile' post.username %}" class="username">{{ post.username }}</a>
+        {% else %}
+          <a href="{% url 'search' post.username %}" class="username">{{ post.username }}</a>
+        {% endif %}
+      {% endspaceless %}
+
+
+      {% if user.is_superuser or post.username == user %}
+      <a href="{% url 'delete_post' post.id %}" class="delete-post-link">
+        <img src="{% static 'delete.png' %}" alt="Delete Post" class="delete-post-icon">
+      </a>
+      {% endif %}
+
+      <p class="description">{{ post.data }}</p>
+
+      {% if post.pic %}
+      <img src="{{ post.pic.url }}" alt="Post Picture" class="picture">      
+      {% endif %}
+
+      <p class="date">{{ post.date_posted }}</p>
+      <ul class="tags">
+        <li>{{ post.tags }}</li>
+      </ul>
+      {% comment %} {% if user.is_superuser or post.username == user %}
+<a href="{% url 'delete_post' post.id %}">Delete</a>
+{% endif %} {% endcomment %}
+    </div>
+  </div>
+{% endfor %}
+
+
+{% endblock %}  

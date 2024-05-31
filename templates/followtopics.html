@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>o_O Hobby Hub</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #111111; /* Dark background color */
+            color: #ffffff;
+        }
+
+        .header {
+            background-color: black;
+            padding: 20px;
+            text-align: center;
+            color: #FFFFFF;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>
+            o_O
+        </h1>
+    </div>
+    <!-- Rest of your website content goes here -->
+</body>
+</html>
+<html>
+<head>
+    <title>Follow Topics</title>
+    <style>
+        body {
+            background-color: black; /* Dark background color */
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #222222; /* Darker background color */
+            border: 1px solid #444444; /* Darker border color */
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .bubbles-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+
+        .bubble {
+            display: inline-block;
+            padding: 8px 12px;
+            border: 1px solid #555555; /* Darker border color */
+            border-radius: 20px;
+            background-color: #333333; /* Darker background color */
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        .bubble.selected {
+            background-color: #555555; /* Darker background color */
+            border-color: #ffffff;
+        }
+
+        .search-bar {
+            margin-top: 20px;
+            margin-bottom: 20px; /* Add margin-bottom */
+        }
+
+        .search-bar input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #555555; /* Darker border color */
+            border-radius: 5px;
+            background-color: #222222; /* Darker background color */
+            color: #ffffff;
+        }
+
+        .submit-button {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .skip-button {
+            position: absolute;
+            top: 221px; /* Adjust the top position as needed */
+            right: 353px; /* Adjust the right position as needed */
+            padding: 8px 16px;
+            background-color: #ff5722; /* Change the color as desired */
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+    <script>
+        
+        // Prevent going back to the login page
+        window.history.pushState(null, document.title, location.href);
+        window.addEventListener('popstate', function(event) {
+            window.history.pushState(null, document.title, location.href);
+        });
+    
+        // Function to handle bubble selection
+        function getSelectedItems() {
+        var selectedBubbles = document.querySelectorAll('.bubble.selected');
+        var selectedItems = Array.from(selectedBubbles).map(function(bubble) {
+            return bubble.textContent;
+        });
+
+        var hiddenInput = document.getElementById('selectedItemsInput');
+        hiddenInput.value = selectedItems.join(',');
+
+        // Submit the form
+        var form = document.getElementById('myForm');
+        form.submit();
+    }
+
+        function selectBubble(bubble) {
+            bubble.classList.toggle("selected");
+        }
+
+        // Function to filter bubbles based on search input
+        function filterBubbles() {
+            var input = document.getElementById("searchInput");
+            var filter = input.value.toUpperCase();
+            var bubbles = document.getElementsByClassName("bubble");
+
+            for (var i = 0; i < bubbles.length; i++) {
+                var content = bubbles[i].textContent || bubbles[i].innerText;
+                if (content.toUpperCase().indexOf(filter) > -1) {
+                    bubbles[i].style.display = "";
+                } else {
+                    bubbles[i].style.display = "none";
+                }
+            }
+        }
+
+        function skipToFirstURL() {
+            window.location.href = "/first"; // Replace "/first-url" with your actual URL
+        }
+    </script>
+</head>
+ <body>
+    <div class="container">
+        <h2>Follow Topics</h2>
+        
+        <button type="button" class="skip-button" onclick="skipToFirstURL()">Skip</button>
+
+        <form method="post" id="myForm">
+            {% csrf_token %}  
+            <div class="search-bar">
+                <input type="text" id="searchInput" onkeyup="filterBubbles()" placeholder="Search">
+            </div>
+            <input type="hidden" id="selectedItemsInput" name="selectedItems" value="">
+            <button type="button" class="submit-button" onclick="getSelectedItems()">Submit</button>
+        <br>
+        <br>
+            <div class="bubbles-container">
+            {% for hobby in hobbies %}
+                <div class="bubble" onclick="selectBubble(this)">{{ hobby }}</div>
+            {% endfor %}
+            <div class="bubble" onclick="selectBubble(this)">Technology</div>
+        </div>
+        <br>
+        <!-- <input type="hidden" id="selectedItemsInput" name="selectedItems" value="">
+    <button type="button" class="submit-button" onclick="getSelectedItems()">Submit</button> -->
+    </form>
+</div>
+</body> 
+</html>

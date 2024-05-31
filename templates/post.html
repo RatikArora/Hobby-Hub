@@ -1,0 +1,231 @@
+
+
+{% extends "home.html" %}
+{% block content %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Post</title>
+    <style>
+        body {
+    background-color: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 700px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #111111;
+    border-radius: 10px;
+    
+    
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.header h2 {
+    margin: 0;
+}
+
+form {
+    margin-top: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #333333;
+    color: #fff;
+    border-radius: 5px;
+    margin-right: 100px;
+}
+
+textarea {
+    height: 150px;
+    resize: vertical;
+}
+
+.bubbles-container {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.bubble {
+    display: inline-block;
+    padding: 8px 12px;
+    border: 1px solid #fff;
+    border-radius: 20px;
+    background-color: #4a4a4a;
+    color: #fff;
+    cursor: pointer;
+}
+
+.bubble.selected {
+    background-color: #333333;
+    font-weight: bold;
+}
+
+.button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.button:hover {
+    font-weight: bold;
+    border: 2px solid #fff;
+
+}
+
+.bubble:hover {
+    font-weight: bold;
+}
+
+.button {
+    padding: 8px 15px;
+    background-color: #333333;
+    color: #fff;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    font-size: large;
+}
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: #333333;
+    color: #fff;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+    </style>
+    <script>
+
+function enablePostButton() {
+    var postContent = document.getElementById('post_content').value;
+    var postButton = document.getElementById('postButton');
+    postButton.disabled = postContent.trim() === ''; // Disable if the content is empty
+}
+
+// Add an event listener to track input changes in the text area
+document.getElementById('post_content').addEventListener('input', enablePostButton);
+
+
+function previewImage(input) {
+        var imagePreview = document.getElementById('imagePreview');
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+            };
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            imagePreview.style.display = 'none';
+        }
+    }
+
+        function selectBubble(event) {
+    var selectedBubbles = document.querySelectorAll('.bubble.selected');
+    var clickedBubble = event.target;
+
+    // Check if the clicked bubble is already selected
+    var alreadySelected = clickedBubble.classList.contains('selected');
+
+    // Check if there is already a selected bubble and the clicked bubble is not selected
+    if (selectedBubbles.length >= 1 && !alreadySelected) {
+        // Deselect the currently selected bubble
+        selectedBubbles[0].classList.remove('selected');
+    }
+
+    // Toggle the selected class for the clicked bubble
+    clickedBubble.classList.toggle('selected');
+}
+
+        function getSelectedHobbies() {
+            var selectedBubbles = document.querySelectorAll('.bubble.selected');
+            var selectedHobbies = Array.from(selectedBubbles).map(function (bubble) {
+                return bubble.textContent;
+            });
+
+            var hiddenInput = document.getElementById('selectedHobbiesInput');
+            hiddenInput.value = selectedHobbies.join(',');
+
+            // Submit the form
+            var form = document.getElementById('postForm');
+            form.submit();
+        }
+
+        function updatePostButtonState() {
+            var selectedBubbles = document.querySelectorAll('.bubble.selected');
+            var postButton = document.getElementById('postButton');
+
+            // Enable the "Post" button if at least one bubble is selected, otherwise disable it
+            postButton.disabled = selectedBubbles.length === 0;
+        }
+
+
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Create a Post</h2>
+        </div>
+    
+        <form action="{% url 'savepost' %}" method="POST" enctype="multipart/form-data" id="postForm">
+            {% csrf_token %}
+            <label for="post_content">Post Content:</label>
+            <textarea id="post_content" name="post_content" placeholder="Enter your post content here..."></textarea>
+            <br>
+            <br>
+            <label for="post_image" class="custom-file-upload">
+                 Add an Image
+            </label>
+            <input type="file" id="post_image" name="post_image" accept="image/*" class="file-input" onchange="previewImage(this)" style = "display : none;">
+            <img id="imagePreview" src="" alt="Image Preview" style="max-width: 100%; max-height: 150px; display: none;">
+            <br>
+            <label for="post_image">Select a Hobby Bubble:</label>
+
+            <div class="bubbles-container">
+                {% for hobby in hobbies %}
+                    <div class="bubble" onclick="selectBubble(event); updatePostButtonState();">{{ hobby }}</div>
+                {% endfor %}
+            </div>
+    
+            <input type="hidden" id="selectedHobbiesInput" name="selected_hobbies" value="">
+    
+            <div class="button-container">
+                <button type="button" class="button" id="postButton" disabled onclick="getSelectedHobbies()">Post</button>
+            </div>
+    
+            {% if request.method == 'POST' and not selected_hobbies %}
+                <p style="color: red;">Select a tag to post</p>
+            {% endif %}
+        </form>
+    </div>
+</body>
+</html>
+
+
+
+{% endblock content %}

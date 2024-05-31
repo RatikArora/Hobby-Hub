@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+<style>
+
+* {box-sizing: border-box}
+body {
+  font-family: "Lato", sans-serif;
+  background-color: #000;
+  color: #fff;
+  margin: 0;
+}
+
+/* Style the tab */
+.tab {
+  position: fixed;
+  top: 60px; /* Adjusted top position */
+  left: 0;
+  background-color:  hsl(0, 0%, 11%);
+  width: 18%;
+  height: 100vh;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  display: block;
+  background-color: inherit;
+  color: white;
+  padding: 22px 16px;
+  width: 100%;
+  border: none;
+  outline: none;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: hsl(0, 0%, 37%);
+  border-radius: 150px;
+}
+
+/* Create an active/current "tab button" class */
+.tab button.active {
+  background-color: #a8a8a8;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+/* Style the tab content */
+.tabcontent {
+  float: right;
+  padding: 12px 10px;
+  width: 80%;
+  border-left: 0px solid #fff;  
+  height: calc(100vh - 110px); /* Adjusted height */
+  display: none;
+  padding-top: 60px; /* Added padding */
+}
+
+/* Remove border from the last tab content */
+.tabcontent:last-child {
+  border: none;
+}
+
+/* Clear floats after the tabs */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Style the header */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: hsl(0, 0%, 11%);
+  padding: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  z-index: 1;
+}
+
+header h2 {
+  margin: 0;
+  padding-left: 10px;
+  color: #fff;
+}
+
+header i {
+  margin-right: 10px;
+  color: #fff;
+  font-size: 30px;
+}
+
+.dropdown {
+      position: absolute;
+      top: 10;
+      right: 0;
+    }
+
+    /* Style the dropdown button */
+    .dropbtn {
+      display: flex;
+      align-items: center;
+      background-color: inherit;
+      color: white;
+      padding: 12px 25px;
+      border: 1px;
+      outline: 1px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 18px;
+    }
+
+    /* Style the dropdown content */
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: hsl(0, 0%, 17%);
+      min-width: 100px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+      top: 100%;
+      right: 0;
+      margin-top: 0px;
+    }
+
+    /* Show the dropdown content on hover */
+    .dropdown:hover .dropdown-content {
+      display: block;
+      border-radius: 10px;
+      align-items: center;
+    }
+
+    /* Style the dropdown links */
+    .dropdown-content a {
+      color: white;
+      padding: 12px 10px;
+      text-decoration: none;
+      display: block;
+    }
+
+    /* Change the background color of dropdown links on hover */
+    .dropdown-content a:hover {
+      background-color: hsl(0, 0%, 37%);
+      border-radius: 5px;
+
+    }
+
+</style>
+
+</head>
+<body>
+
+  <header>
+    <h2>Homepage</h2>
+    <div class="dropdown">
+      <button class="dropbtn"><h3>Logout</h3></button>
+      <div class="dropdown-content">
+        <a href="logout_view">Logout</a>
+      </div>
+    </div>
+  </header>
+
+<div class="tab clearfix">
+  <button class="tablinks" onclick="openCity(event, 'Home')" id="defaultOpen"> Home</button>
+  <button class="tablinks" onclick="openCity(event, 'Explore')"> Explore</button>
+  <button class="tablinks" onclick="openCity(event, 'Notifications')">Notifications</button>
+  <button class="tablinks" onclick="openCity(event, 'Profile')">Profile</button>
+  <button class="tablinks" onclick="openCity(event, 'user')">{{user.username}}</button>
+
+</div>
+
+<div id="Home" class="tabcontent">
+  {% block home %}
+
+  {% endblock home %}
+  <!-- <h3>Home</h3>
+  <p>This is the home tab.</p> -->
+</div>  
+
+<div id="Explore" class="tabcontent">
+  {% block explore %}
+
+  {% endblock explore %}
+  <!-- <h3>Explore</h3>
+  <p>This is the explore tab.</p>  -->
+</div>
+
+<div id="Notifications" class="tabcontent">
+  {% block notifications %}
+
+  {% endblock notifications %}
+  <!-- <h3>Notifications</h3>
+  <p>This is the notifications tab.</p> -->
+</div>
+
+<div id="Profile" class="tabcontent">
+  {% block profile %}
+
+  {% endblock profile %}
+  <!-- <h3>Profile</h3>
+  <p>This is the profile tab.</p> -->
+</div>
+
+<div id="user" class="tabcontent">
+  <h3>logged in as {{user.username}}</h3>
+  <p>all your details will be here like profile photo and all your details that you have entered in the regestration form</p>
+</div>
+
+<script>
+
+function openCity(evt, cityName) {
+  var tabcontent = document.getElementById(cityName);
+  var tablinks = document.getElementsByClassName("tablinks");
+  for (var i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  tabcontent.style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+// Add event listeners to the tab links
+var tablinks = document.getElementsByClassName("tablinks");
+for (var i = 0; i < tablinks.length; i++) {
+  tablinks[i].addEventListener("click", openCity, false);
+}
+  </script>
+  
+
+</body>
+</html>

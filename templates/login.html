@@ -1,0 +1,164 @@
+
+
+<!DOCTYPE html>
+<!DOCTYPE html>
+
+
+
+
+<html>
+<head>
+    <title>o_O Hobby Hub</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #111111; /* Dark background color */
+            color: #ffffff;
+        }
+
+        .header {
+            background-color: black;
+            padding: 20px;
+            text-align: center;
+            color: #FFFFFF;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>
+            o_O
+        </h1>
+    </div>
+    <!-- Rest of your website content goes here -->
+</body>
+</html>
+<html>
+<head>
+    <title>o_O Hobby Hub</title>
+    <style>
+        /* CSS styles for the login page */
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: black; /* Dark background color */
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 70px auto;
+            padding: 40px;
+            background-color: #222222; /* Darker background color */
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #ffffff;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+            background-color: #333333; /* Darker background color */
+            color: #ffffff;
+        }
+
+        .login-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+        }
+        .register-link a {
+            color: #4CAF50;
+            text-decoration: none;
+            margin-top: 20px;
+            text-align: center;
+            display: block;
+        }
+        .alert {
+            display: block;
+            width: 94%;
+            padding: 12px;
+            background-color: #FF671F;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <h2>Login</h2>
+        
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label type = "text" for="username">Username:</label>
+                <!-- <input type="text" id="username" name="username" placeholder="Enter your username"> -->
+                {{form.username}}  
+                {{form.username.errors}}
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <!-- <input type="password" id="password" name="password" placeholder="Enter your password"> -->
+                {{form.password}}
+                {{form.password.errors}}
+
+            </div>
+            {% if message %}
+            <p>
+                <div class="alert">
+                    <strong>Error!</strong> The login credentials didn't match.
+                </div>
+            </p>
+            {% endif %}
+            <button type="submit" class="login-button">Login</button>
+            
+    
+        </form>
+        
+        <br>
+        <div class="register-link">Don't have a account?
+             <a href="/register">Create a new account </a>
+        </div>
+    </div>
+</body>
+</html>

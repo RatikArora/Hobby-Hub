@@ -1,0 +1,176 @@
+{% extends "home.html" %}
+{% block content %}
+{% load static %}
+
+  <!-- <h3>extended Profile</h3>
+  <p>This is the Profile tab.</p> -->
+  <!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    /* Profile page styles */
+    body {
+      background-color: #000000;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+    }
+
+    .profile-container {
+      max-width: 700px;
+      margin: 50px auto;
+      padding: 25px;
+      background-color: #111111;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .profile-photo {
+      width: 200px;
+      height: 200px;
+      border: 5px solid #ffffff;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 0 auto;
+    }
+
+    .profile-photo img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .profile-details {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .profile-details h2 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+
+    .profile-details p {
+      margin-bottom: 5px;
+    }
+
+    .profile-details .interests {
+      margin-top: 20px;
+    }
+
+    .profile-details .interests ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .profile-details .interests li {
+      margin-right: 10px;
+      padding: 5px 10px;
+      background-color: #333333;
+      border-radius: 5px;
+    }
+
+    .follow-button,
+    .unfollow-button {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    /* Style for the Follow button */
+    .follow-button {
+      background-color: #007bff; /* Blue color for the Follow button */
+      color: #fff;
+    }
+
+    /* Style for the Unfollow button */
+    .unfollow-button {
+      background-color: #fff; /* White color for the Unfollow button */
+      color: #000;
+    }
+
+    /* Center the buttons */
+    .button-container {
+      text-align: center;
+    }
+
+    .date-joined {
+      color: #999999; /* Light gray color */
+      font-size: 0.9rem;
+      margin-top: 10px; /* Add some space between the interests and date joined */
+    }
+      
+  </style>
+</head>
+
+<body>
+  <div class="profile-container">
+    {% comment %} <div class="profile-photo">
+      <img src="{% static '/images/photo.jpeg' %}" alt="Profile Photo">
+    </div> {% endcomment %}
+
+    <div class="profile-photo">
+      <img src="{{ user.profile.image.url }}" alt= "profile picture   ">
+    </div>
+
+    <div class="profile-details">
+      <h2>@{{user.username}}</h2>
+      <p>Name: {{user.first_name}} {{user.last_name}}</p>
+      {% if user.profile.bio %}
+        <p>Bio: {{ user.profile.bio }}</p>
+      {% endif %}
+      <!-- <p>Email: {{user.email}}</p> -->
+      <!-- <p>Current Location: </p> -->
+      <!-- <p>Date Joined: {{user.date_joined}}</p> -->
+      
+      <div class="button-container">
+        {% if request.user != user %}
+          {% if is_following %}
+            <form action="{% url 'unfollow_user' username=user.username %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="follow-button">Unfollow</button>
+            </form>
+          {% else %}
+            <form action="{% url 'follow_user' username=user.username %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="follow-button">Follow</button>
+            </form>
+          {% endif %}
+        {% endif %}
+      </div>
+
+      <div class="interests">
+        <h3>Interests</h3>
+         
+        <ul>
+          
+            {% for j in hobbies %}
+            {% for i in j %}
+              <li>{{ i }}</li>  
+            {% endfor %}
+            </ul><p></p><ul>
+            {% endfor %}
+        
+            </ul>
+      
+            <p class="date-joined">Joined o_O on {{ user.date_joined|date:"F d, Y" }}</p>
+
+        
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
+
+
+{% endblock content %}
+
