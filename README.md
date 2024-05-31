@@ -5,6 +5,7 @@ Hobby Hub is a dynamic platform designed to create a vibrant community where ind
 ## Table of Contents
 
 - [Features](#features)
+- [Screenshots](#screenshots)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
@@ -21,6 +22,19 @@ Hobby Hub is a dynamic platform designed to create a vibrant community where ind
 - **Responsive Design**: Dynamic website layout suitable for all screen resolutions.
 - **Image Compression**: Compress images by size and quality before uploading.
 - **Post Management**: Like, repost, comment on posts, and delete your own posts.
+
+## Screenshots
+# Login page
+![image](https://github.com/RatikArora/Hobby-Hub/assets/109450633/9ef9715b-5c87-4a33-a704-77948e134e9d)
+# Home page
+![image](https://github.com/RatikArora/Hobby-Hub/assets/109450633/25c95f79-2151-4320-b3c4-d5422af8edc8)
+# Create Post
+![image](https://github.com/RatikArora/Hobby-Hub/assets/109450633/7c56f80f-afe3-415a-b4c6-acfed355a8fe)
+# Profile page
+![image](https://github.com/RatikArora/Hobby-Hub/assets/109450633/e8e8bb0d-a8bc-4ea2-8de4-71a75c9e2afb)
+# Notifications
+![image](https://github.com/RatikArora/Hobby-Hub/assets/109450633/694abfa6-d12b-4779-b60c-8cc08f6862bd)
+
 
 ## Installation
 
